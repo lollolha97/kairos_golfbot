@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<launch>
+  <!-- params -->
+  <param name="forest_file" value="$(find leg_tracker)/config/trained_leg_detector_res=0.33.yaml" />
+  <param name="scan_topic" value="/scan" />
+  <param name="fixed_frame" value="/base_footprint"/>
+  <param name="scan_frequency" value="10"/>  
+  
+  <!-- Optional parameters with default values -->
+  <param name="publish_people_frame" value="base_footprint"/>
+  <param name="max_detected_clusters" value="-1"/> <!-- -1 means unlimited -->
+  <param name="detection_threshold" value="-1"/> <!-- -1 means no threshold -->
+  <param name="cluster_dist_euclid" value="0.13"/> <!-- in meters -->
+  <param name="min_points_per_cluster" value="3"/>
+  <param name="max_detect_distance" value="10.0"/> <!-- in meters -->
+  <param name="max_leg_pairing_dist" value="0.8"/> <!-- in meters -->
+  <param name="confidence_threshold_to_maintain_track" value="0.1"/>
+  <param name="publish_occluded" value="true"/>
+  <param name="use_scan_header_stamp_for_tfs" value="false"/>
+  <param name="display_detected_people" value="false"/>
+  <param name="dist_travelled_together_to_initiate_leg_pair" value="0.5"/> <!-- in meters -->
+  <param name="in_free_space_threshold" value="0.06"/>
+  <param name="confidence_percentile" value="0.9"/>
+  <param name="max_std" value="0.9"/>  
+
+  <!-- run detect_leg_clusters -->  
+  <node pkg="leg_tracker" type="detect_leg_clusters" name="detect_leg_clusters" output="screen"/>
+
+  <!-- run joint_leg_tracker -->
+  <node pkg="leg_tracker" type="joint_leg_tracker.py" name="joint_leg_tracker" output="screen"/>
+ 
+   <!-- run local_occupancy_grid_mapping -->
+  <node pkg="leg_tracker" type="local_occupancy_grid_mapping" name="local_occupancy_grid_mapping" output="screen"/> 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find leg_tracker)/rviz/teb.rviz"/>
+
+</launch>
