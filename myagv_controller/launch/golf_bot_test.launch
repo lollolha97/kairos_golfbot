@@ -1,0 +1,13 @@
+<launch>
+    <!-- Launch yolov5_ros launch file -->
+    <include file="$(find yolov5_ros)/launch/yolov5.launch" />
+
+    <!-- Launch leg_tracker launch file -->
+    <include file="$(find leg_tracker)/launch/individual_leg_tracker.launch" />
+
+    <!-- Run sub_hara_roi.py node -->
+    <node pkg="myagv_controller" type="sub_hara_roi.py" name="sub_hara_roi" output="screen" />
+
+    <!-- Run test0526.py node -->
+    <node pkg="myagv_controller" type="test0526_2.py" name="test0526" output="screen" />
+</launch>
