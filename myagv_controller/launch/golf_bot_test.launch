@@ -9,5 +9,8 @@
     <node pkg="myagv_controller" type="sub_hara_roi.py" name="sub_hara_roi" output="screen" />
 
     <!-- Run test0526.py node -->
-    <node pkg="myagv_controller" type="test0526_2.py" name="test0526" output="screen" />
+    <node pkg="myagv_controller" type="test0527.py" name="test0527_2" output="screen" />
+    
+    <!-- Run rqt with a specific perspective -->
+    <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" args="-p $(find myagv_controller)/rqt/Default.perspective" output="screen" />
 </launch>

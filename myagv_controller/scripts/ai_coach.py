@@ -134,7 +134,8 @@ while cap.isOpened():
             cv2.putText(img_result, f'Right Arm Angle : {right_arm_angle:.2f}', (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.75, color=color)
             color_waist = (0, 255, 0) if right_waist_angle < 155 else (0, 0, 255)
             cv2.putText(img_result, f'Right Waist Angle : {right_waist_angle:.2f}', (20, 40), cv2.FONT_HERSHEY_DUPLEX, 0.75, color_waist)
-            cv2.putText(img_result, f'Best Angle : {angle_with_horizontal:.2f}', (20, 60), cv2.FONT_HERSHEY_DUPLEX, 0.75, color_waist)
+            # 0527 삭제
+            # cv2.putText(img_result, f'Best Angle : {angle_with_horizontal:.2f}', (20, 60), cv2.FONT_HERSHEY_DUPLEX, 0.75, color_waist)
 
             if (25 <= angle_with_horizontal <= 35) and (right_wrist_y > right_shoulder_y):
                 cv2.imwrite(captured_frame_path, img_result)
