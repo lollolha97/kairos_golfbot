@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROS STT Web</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Speak to Control ROS</h1>
+    <button id="sttButton">Press and Speak</button>
+    <p id="status">Click the button and start speaking...</p>
+    <p id="rosMessage">Waiting for ROS messages...</p>
+
+    <script>
+        const button = document.getElementById('sttButton');
+        const status = document.getElementById('status');
+        const rosMessage = document.getElementById('rosMessage');
+        const socket = io();
+
+        // Check for browser support
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'ko-KR';  // 한국어로 설정
+
+            recognition.onstart = function() {
+                status.textContent = 'Listening...';
+            };
+
+            recognition.onresult = function(event) {
+                const speechResult = event.results[0][0].transcript;
+                status.textContent = 'You said: ' + speechResult;
+
+                // Send the speech result to the server
+                fetch('/process_speech', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ speech: speechResult })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Success:', data);
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            };
+
+            recognition.onerror = function(event) {
+                status.textContent = 'Error occurred in recognition: ' + event.error;
+            };
+
+            recognition.onend = function() {
+                status.textContent = 'Click the button and start speaking...';
+            };
+
+            button.addEventListener('click', function() {
+                recognition.start();
+            });
+        } else {
+            status.textContent = 'Speech recognition not supported in this browser.';
+        }
+
+        // Listen for ROS messages from the server
+        socket.on('ros_message', function(msg) {
+            rosMessage.textContent = 'Received from ROS: ' + msg.data;
+        });
+    </script>
+</body>
+</html>
