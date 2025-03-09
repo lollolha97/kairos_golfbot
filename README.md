@@ -19,11 +19,9 @@
 - ChatGPT API를 활용한 'Quantitative Golf Swing Analysis based on Kinematic Mining Approach' 논문 기반 피드백 제공 
 
 ## 시스템 아키텍처
-- 시스템 아키텍처
-![system](./git_images/system_arc.png)
-
-- 다이어그램
-![diagram](./git_images/diagram.png)
+|시스템 아키텍처| 다이어그램 |
+|--------|------------|
+| ![system](./git_images/system_arc.png) | ![diagram](./git_images/diagram.png) |
 
 ## 상세 설명
 ### 트랙킹
